@@ -19,7 +19,7 @@ Observable::of('https://jsonplaceholder.typicode.com/posts')
         return Http::get(sprintf('https://jsonplaceholder.typicode.com/posts/%d/comments', $post->id));
     })
     ->groupBy(function () {
-        static $index = 0;return $index++ % 5;
+        static $index = 0;return $index++ % 5; // Limit by 5 concurrent requests
     })
     ->flatMap(function (Observable\GroupedObservable $go) {
         return $go->concatAll();
